@@ -5,9 +5,14 @@
  */
 package Project;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -21,39 +26,65 @@ public class Main extends javax.swing.JFrame {
      */
     public Main() {
         initComponents();
+        Date();
+        Time();
     }
+
     // for functions 
     public void ItemCost() {
         double sum = 0;
-        for(int i=0;i<itemTable.getRowCount();i++) {
+        for (int i = 0; i < itemTable.getRowCount(); i++) {
             sum = sum + Double.parseDouble(itemTable.getValueAt(i, 2).toString());
         }
         varSubtotal.setText(Double.toString(sum));
         double Total = Double.parseDouble(varSubtotal.getText());
-        
-        double Tax = (Total * 3.9)/100;
+
+        double Tax = (Total * 3.9) / 100;
         String TaxTotal = String.format("PHP %.2f", Tax);
         varTax.setText(TaxTotal);
-        
+
         String SubTotal = String.format("PHP %.2f", Total);
         varSubtotal.setText(SubTotal);
-        
+
         String Total1 = String.format("PHP %.2f", Total + Tax);
         varTotal.setText(Total1);
     }
+
     public void Change() {
-        double sum =0;
+        double sum = 0;
         double cash = Double.parseDouble(varDisplay.getText());
-        
-        for(int i=0;i<itemTable.getRowCount();i++) {
+
+        for (int i = 0; i < itemTable.getRowCount(); i++) {
             sum = sum + Double.parseDouble(itemTable.getValueAt(i, 2).toString());
         }
-        
-        double Tax =  (sum * 3.9)/100;
+
+        double Tax = (sum * 3.9) / 100;
         double change = (cash - (sum + Tax));
-        
+
         String ChangeGiven = String.format("PHP %.2f", change);
         varChange.setText(ChangeGiven);
+    }
+
+    public void Date() {
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        String Date = dateFormat.format(date);
+        varDate.setText(Date);
+
+    }
+
+    public void Time() {
+         new Timer(0, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                Date date = new Date();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+
+                varTime.setText(dateFormat.format(date));
+            }
+
+        }).start();
     }
 
     /**
@@ -110,8 +141,12 @@ public class Main extends javax.swing.JFrame {
         varReset = new javax.swing.JButton();
         varRemove = new javax.swing.JButton();
         varExit = new javax.swing.JButton();
+        varPriceList = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
         icon = new javax.swing.JLabel();
+        jPanel8 = new javax.swing.JPanel();
+        varTime = new javax.swing.JLabel();
+        varDate = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("FoodMenu");
@@ -480,7 +515,7 @@ public class Main extends javax.swing.JFrame {
 
         varPayMethod.setEditable(true);
         varPayMethod.setFont(new java.awt.Font("Script MT Bold", 1, 18)); // NOI18N
-        varPayMethod.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cash", "Maya", "Gcash", " " }));
+        varPayMethod.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cash", "Maya", "Gcash" }));
         varPayMethod.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 varPayMethodActionPerformed(evt);
@@ -571,14 +606,27 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
+        varPriceList.setFont(new java.awt.Font("Script MT Bold", 0, 36)); // NOI18N
+        varPriceList.setForeground(new java.awt.Color(204, 0, 153));
+        varPriceList.setText("Price List");
+        varPriceList.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                varPriceListActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+            .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(35, 35, 35)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(varExit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(varExit, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(varPriceList, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(varPay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -586,8 +634,8 @@ public class Main extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(varRemove, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(varReset, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addGap(39, 39, 39))
+                            .addComponent(varReset, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(39, 39, 39))))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -601,7 +649,9 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(varPrint)
                     .addComponent(varRemove))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(varExit)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(varExit)
+                    .addComponent(varPriceList))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
@@ -644,6 +694,35 @@ public class Main extends javax.swing.JFrame {
             .addComponent(icon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
+        jPanel8.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+
+        varTime.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        varTime.setText("Time");
+
+        varDate.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        varDate.setText("Date");
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(varDate)
+                .addGap(72, 72, 72)
+                .addComponent(varTime)
+                .addContainerGap(90, Short.MAX_VALUE))
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(varDate)
+                    .addComponent(varTime))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -654,12 +733,17 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(10, 10, 10)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(10, 10, 10)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(32, 32, 32)
+                                        .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGap(14, 14, 14)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -670,9 +754,13 @@ public class Main extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(13, 13, 13)
+                                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(34, 34, 34)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(32, 32, 32)
                         .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(20, 20, 20)
@@ -711,10 +799,10 @@ public class Main extends javax.swing.JFrame {
     private void varBtn7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_varBtn7ActionPerformed
         // TODO add your handling code here:
         String enNumber = varDisplay.getText();
-        
-        if(enNumber == "") {
+
+        if (enNumber == "") {
             varDisplay.setText(varBtn7.getText());
-            
+
         } else {
             enNumber = varDisplay.getText() + varBtn7.getText();
             varDisplay.setText(enNumber);
@@ -724,24 +812,24 @@ public class Main extends javax.swing.JFrame {
     private void varBtn8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_varBtn8ActionPerformed
         // TODO add your handling code here:
         String enNumber = varDisplay.getText();
-        
-        if(enNumber == "") {
+
+        if (enNumber == "") {
             varDisplay.setText(varBtn8.getText());
-            
+
         } else {
             enNumber = varDisplay.getText() + varBtn8.getText();
             varDisplay.setText(enNumber);
         }
-        
+
     }//GEN-LAST:event_varBtn8ActionPerformed
 
     private void varBtn9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_varBtn9ActionPerformed
         // TODO add your handling code here:
         String enNumber = varDisplay.getText();
-        
-        if(enNumber == "") {
+
+        if (enNumber == "") {
             varDisplay.setText(varBtn9.getText());
-            
+
         } else {
             enNumber = varDisplay.getText() + varBtn9.getText();
             varDisplay.setText(enNumber);
@@ -751,10 +839,10 @@ public class Main extends javax.swing.JFrame {
     private void varBtn4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_varBtn4ActionPerformed
         // TODO add your handling code here:
         String enNumber = varDisplay.getText();
-        
-        if(enNumber == "") {
+
+        if (enNumber == "") {
             varDisplay.setText(varBtn4.getText());
-            
+
         } else {
             enNumber = varDisplay.getText() + varBtn4.getText();
             varDisplay.setText(enNumber);
@@ -764,10 +852,10 @@ public class Main extends javax.swing.JFrame {
     private void varBtn5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_varBtn5ActionPerformed
         // TODO add your handling code here:
         String enNumber = varDisplay.getText();
-        
-        if(enNumber == "") {
+
+        if (enNumber == "") {
             varDisplay.setText(varBtn5.getText());
-            
+
         } else {
             enNumber = varDisplay.getText() + varBtn5.getText();
             varDisplay.setText(enNumber);
@@ -777,10 +865,10 @@ public class Main extends javax.swing.JFrame {
     private void varBtn6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_varBtn6ActionPerformed
         // TODO add your handling code here:
         String enNumber = varDisplay.getText();
-        
-        if(enNumber == "") {
+
+        if (enNumber == "") {
             varDisplay.setText(varBtn6.getText());
-            
+
         } else {
             enNumber = varDisplay.getText() + varBtn6.getText();
             varDisplay.setText(enNumber);
@@ -790,10 +878,10 @@ public class Main extends javax.swing.JFrame {
     private void varBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_varBtn1ActionPerformed
         // TODO add your handling code here:
         String enNumber = varDisplay.getText();
-        
-        if(enNumber == "") {
+
+        if (enNumber == "") {
             varDisplay.setText(varBtn1.getText());
-            
+
         } else {
             enNumber = varDisplay.getText() + varBtn1.getText();
             varDisplay.setText(enNumber);
@@ -803,10 +891,10 @@ public class Main extends javax.swing.JFrame {
     private void varBtn2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_varBtn2ActionPerformed
         // TODO add your handling code here:
         String enNumber = varDisplay.getText();
-        
-        if(enNumber == "") {
+
+        if (enNumber == "") {
             varDisplay.setText(varBtn2.getText());
-            
+
         } else {
             enNumber = varDisplay.getText() + varBtn2.getText();
             varDisplay.setText(enNumber);
@@ -816,10 +904,10 @@ public class Main extends javax.swing.JFrame {
     private void varBtn0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_varBtn0ActionPerformed
         // TODO add your handling code here:
         String enNumber = varDisplay.getText();
-        
-        if(enNumber == "") {
+
+        if (enNumber == "") {
             varDisplay.setText(varBtn0.getText());
-            
+
         } else {
             enNumber = varDisplay.getText() + varBtn0.getText();
             varDisplay.setText(enNumber);
@@ -828,7 +916,7 @@ public class Main extends javax.swing.JFrame {
 
     private void varBtnDotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_varBtnDotActionPerformed
         // TODO add your handling code here:
-        if(!varDisplay.getText().contains(".")) {
+        if (!varDisplay.getText().contains(".")) {
             varDisplay.setText(varDisplay.getText() + varBtnDot.getText());
         }
     }//GEN-LAST:event_varBtnDotActionPerformed
@@ -841,15 +929,16 @@ public class Main extends javax.swing.JFrame {
 
     private void item1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_item1ActionPerformed
         // TODO add your handling code here:
-        double PriceItem =  350.0;
+        double PriceItem = 350.0;
         DefaultTableModel model = (DefaultTableModel) itemTable.getModel();
-        model.addRow(new Object[] {"BlackForestCake", "1", PriceItem});
+        model.addRow(new Object[]{"BlackForestCake", "1", PriceItem});
         ItemCost();
     }//GEN-LAST:event_item1ActionPerformed
 
     private void varPayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_varPayActionPerformed
         // TODO add your handling code here:
-        if(varPayMethod.getSelectedItem().equals("Cash")) {
+        if (varPayMethod.getSelectedItem().equals("Cash")) {
+            JOptionPane.showMessageDialog(null, "Successfully Purchase the Item!","Success",JOptionPane.PLAIN_MESSAGE);
             Change();
         } else {
             varChange.setText("");
@@ -873,8 +962,8 @@ public class Main extends javax.swing.JFrame {
         MessageFormat header = new MessageFormat("Printing in Progress...");
         MessageFormat footer = new MessageFormat("Page {0,number,integer}");
         try {
-            itemTable.print(JTable.PrintMode.NORMAL,header,footer);
-        } catch(java.awt.print.PrinterException e) {
+            itemTable.print(JTable.PrintMode.NORMAL, header, footer);
+        } catch (java.awt.print.PrinterException e) {
             System.err.format("No Printer Found", e.getMessage());
         }
     }//GEN-LAST:event_varPrintActionPerformed
@@ -883,12 +972,12 @@ public class Main extends javax.swing.JFrame {
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) itemTable.getModel();
         int RemoveItem = itemTable.getSelectedRow();
-        if(RemoveItem >= 0) {
+        if (RemoveItem >= 0) {
             model.removeRow(RemoveItem);
         }
         ItemCost();
-        if(varPayMethod.getSelectedItem().equals("Cash")) {
-            Change();
+        if (varPayMethod.getSelectedItem().equals("Cash")) {
+            JOptionPane.showMessageDialog(null, "You remove the item","Remove",JOptionPane.PLAIN_MESSAGE);
         } else {
             varChange.setText("");
             varDisplay.setText("");
@@ -897,8 +986,8 @@ public class Main extends javax.swing.JFrame {
 
     private void varExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_varExitActionPerformed
         // TODO add your handling code here:
-        int res = JOptionPane.showConfirmDialog(this, "Are you sure to LogOut?","LogOut",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
-        if(res==JOptionPane.YES_OPTION) {
+        int res = JOptionPane.showConfirmDialog(this, "Are you sure to LogOut?", "LogOut", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (res == JOptionPane.YES_OPTION) {
             Login login = new Login();
             login.show();
             this.dispose();
@@ -910,10 +999,10 @@ public class Main extends javax.swing.JFrame {
     private void varBtn3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_varBtn3ActionPerformed
         // TODO add your handling code here:
         String enNumber = varDisplay.getText();
-        
-        if(enNumber == "") {
+
+        if (enNumber == "") {
             varDisplay.setText(varBtn3.getText());
-            
+
         } else {
             enNumber = varDisplay.getText() + varBtn3.getText();
             varDisplay.setText(enNumber);
@@ -922,59 +1011,65 @@ public class Main extends javax.swing.JFrame {
 
     private void item2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_item2ActionPerformed
         // TODO add your handling code here:
-        double PriceItem =  390.0;
+        double PriceItem = 390.0;
         DefaultTableModel model = (DefaultTableModel) itemTable.getModel();
-        model.addRow(new Object[] {"CaramelCake", "2", PriceItem});
+        model.addRow(new Object[]{"CaramelCake", "2", PriceItem});
         ItemCost();
     }//GEN-LAST:event_item2ActionPerformed
 
     private void item3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_item3ActionPerformed
         // TODO add your handling code here:
-        double PriceItem =  295.0;
+        double PriceItem = 295.0;
         DefaultTableModel model = (DefaultTableModel) itemTable.getModel();
-        model.addRow(new Object[] {"Brownie bottomed", "3", PriceItem});
+        model.addRow(new Object[]{"Brownie bottomed", "3", PriceItem});
         ItemCost();
     }//GEN-LAST:event_item3ActionPerformed
 
     private void item4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_item4ActionPerformed
         // TODO add your handling code here:
-        double PriceItem =  500.0;
+        double PriceItem = 500.0;
         DefaultTableModel model = (DefaultTableModel) itemTable.getModel();
-        model.addRow(new Object[] {"Chocolate lasanga", "4", PriceItem});
+        model.addRow(new Object[]{"Chocolate lasanga", "4", PriceItem});
         ItemCost();
     }//GEN-LAST:event_item4ActionPerformed
 
     private void item5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_item5ActionPerformed
         // TODO add your handling code here:
-        double PriceItem =  150.0;
+        double PriceItem = 150.0;
         DefaultTableModel model = (DefaultTableModel) itemTable.getModel();
-        model.addRow(new Object[] {"OreoShake", "5", PriceItem});
+        model.addRow(new Object[]{"OreoShake", "5", PriceItem});
         ItemCost();
     }//GEN-LAST:event_item5ActionPerformed
 
     private void item6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_item6ActionPerformed
         // TODO add your handling code here:
-        double PriceItem =  129.0;
+        double PriceItem = 129.0;
         DefaultTableModel model = (DefaultTableModel) itemTable.getModel();
-        model.addRow(new Object[] {"Strawberry Shake", "6", PriceItem});
+        model.addRow(new Object[]{"Strawberry Shake", "6", PriceItem});
         ItemCost();
     }//GEN-LAST:event_item6ActionPerformed
 
     private void item7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_item7ActionPerformed
         // TODO add your handling code here:
-        double PriceItem =  99.0;
+        double PriceItem = 99.0;
         DefaultTableModel model = (DefaultTableModel) itemTable.getModel();
-        model.addRow(new Object[] {"Coke Float", "7", PriceItem});
+        model.addRow(new Object[]{"Coke Float", "7", PriceItem});
         ItemCost();
     }//GEN-LAST:event_item7ActionPerformed
 
     private void item8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_item8ActionPerformed
         // TODO add your handling code here:
-        double PriceItem =  77.0;
+        double PriceItem = 77.0;
         DefaultTableModel model = (DefaultTableModel) itemTable.getModel();
-        model.addRow(new Object[] {"Hot Choco", "8", PriceItem});
+        model.addRow(new Object[]{"Hot Choco", "8", PriceItem});
         ItemCost();
     }//GEN-LAST:event_item8ActionPerformed
+
+    private void varPriceListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_varPriceListActionPerformed
+        // TODO add your handling code here:
+        PriceList pricelist = new PriceList();
+        pricelist.show();
+    }//GEN-LAST:event_varPriceListActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1033,6 +1128,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton varBtn0;
     private javax.swing.JButton varBtn1;
@@ -1047,15 +1143,18 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton varBtnClear;
     private javax.swing.JButton varBtnDot;
     private javax.swing.JTextField varChange;
+    private javax.swing.JLabel varDate;
     private javax.swing.JTextField varDisplay;
     private javax.swing.JButton varExit;
     private javax.swing.JButton varPay;
     private javax.swing.JComboBox<String> varPayMethod;
+    private javax.swing.JButton varPriceList;
     private javax.swing.JButton varPrint;
     private javax.swing.JButton varRemove;
     private javax.swing.JButton varReset;
     private javax.swing.JTextField varSubtotal;
     private javax.swing.JTextField varTax;
+    private javax.swing.JLabel varTime;
     private javax.swing.JTextField varTotal;
     // End of variables declaration//GEN-END:variables
 }
